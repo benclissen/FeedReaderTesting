@@ -84,19 +84,47 @@ $(function() {
       })
 
 
-    /* TODO: Write a new test suite named "Initial Entries" */
+    /* Test suite named "Initial Entries" */
 
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
+    describe('Initial Entries', function() {
+      /* Sixth test that ensures when the loadFeed
+       * function is called and completes its work, there is at least
+       * a single .entry element within the .feed container.
+       * Remember, loadFeed() is asynchronous so this test will require
+       * the use of Jasmine's beforeEach and asynchronous done() function.
+       */
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+       beforeEach(function(done) {
+         loadFeed(0,done);
+       });
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+       it('completes its work', function() {
+         const feedEntry = document.querySelector('.feed .entry');
+         expect(feedEntry.children.length >0).toBe(true);
+       });
+    });
+
+    /* Test suite named "New Feed Selection" */
+    describe('New Feed Selection', function() {
+      /* Seventh test that ensures when a new feed is loaded
+       * by the loadFeed function that the content actually changes.
+       * Remember, loadFeed() is asynchronous.
+       */
+      const firstFeed = [];
+      const feed = document.querySelector('.feed');
+
+       beforeEach(function(done) {
+         loadFeed(0);
+         Array.from(feed.children).forEach(function(entry) {
+           firstFeed.push(entry.innerText);
+         });
+         loadFeed(1,done);
+       });
+
+      it('changes content', function() {
+        Array.from(feed.children).forEach(function(entry, index) {
+          expect(entry.innerText === firstFeed[index]).toBe(false);
+        });
+      });
+    });
 }());
